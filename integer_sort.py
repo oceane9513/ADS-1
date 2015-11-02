@@ -16,6 +16,27 @@ def integer_sort(A, k):
     Example: integer_sort([5, 3, 6, 7, 12, 3, 6, 1, 4, 7]), 12) = 
                  [1, 3, 3, 4, 5, 6, 6, 7, 7, 12]
     '''
+    if is_max_of_A(A,k):
+        Y = [0] * (k+1)
+        for i in range(0,len(A)):
+
+            Y[A[i]] +=1
+        index = 0
+        for j in range(0,k):
+            for  s in range(0,Y[j]):
+                A[index] = j
+                index += 1
+        return A
+
+def is_max_of_A(A,k):
+    is_max = False
+    for i in range(0,len(A)):
+        if A[i] > k:
+            is_max = False
+        else:
+            is_max = True
+    return is_max
+
 
 class IntegerSortTest(unittest.TestCase):
     """Test Suite for integer sort problem
@@ -33,8 +54,10 @@ class IntegerSortTest(unittest.TestCase):
         passing is not a guarantee of correctness.
         """
         A = [5, 3, 6, 7, 12, 3, 6, 1, 4, 7]
-        integer_sort(A, 12)
+        integer_sort(A,14)
         self.assertEqual(A, [1, 3, 3, 4, 5, 6, 6, 7, 7, 12])
 
 if __name__ == '__main__':
-    unittest.main()
+    #unittest.main()
+    A = [5, 3, 6, 7, 12, 7]
+    print integer_sort(A,14)
