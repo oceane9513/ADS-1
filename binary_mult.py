@@ -3,8 +3,8 @@
 '''
 Assignment 1: Binary Multiplication
 
-Team Number: 
-Student Names:
+Team Number: 2
+Student Names: Alieu Jallow
 '''
 import sys
 #sys.setrecursionlimit(10000)
@@ -23,7 +23,7 @@ def binary_mult(A , B):
     #assert len(A) > 0 and len(B)>0
 
     maxlen = max(len(A), len(B))
-    if maxlen <= 1:
+    if maxlen == 1:
         return A[0] * B[0]
         #return [result] if result < 2 else [result / 2, result % 2]
     else:
@@ -86,6 +86,7 @@ def binary_add(x,y):
         result.append(carry)
 
     result.reverse()
+
     return result
 
 def add(X,Y):
@@ -112,7 +113,7 @@ def add(X,Y):
         return result
 
 def make_input_same_length(x,y):
-    diff =0
+    diff = 0
     z = []
     if len(x)> len(y):
         diff = len(x) - len(y)
@@ -147,9 +148,11 @@ class BinaryMultTest(unittest.TestCase):
         self.assertEqual(answer, [0,0,0,0,1,1,0,0])
 
 if __name__ == '__main__':
+
    # unittest.main()
     a = [1,1,1,0,0]
     b = [1,0,1,0,0]
+
     #print make_input_same_length(a,y)
     #t, z = make_input_same_length(a,y)
     #print t
