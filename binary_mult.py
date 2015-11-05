@@ -1,15 +1,12 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-'''
+"""
 Assignment 1: Binary Multiplication
-
 Team Number: 2
 Student Names: Alieu Jallow, Oceane Boetsch
-'''
-import sys
-#sys.setrecursionlimit(10000)
+"""
 import unittest
-import math
+
 def binary_mult(A, B):
     """
     Sig: int[0..n-1], int[0..n-1] ==> int[0..2*n-1]
@@ -34,16 +31,16 @@ def binary_mult(A, B):
     b_left = B[ : m]
     b_right = B[ m :]
 
-    P1 = binary_mult(a_left, b_left)
-    P2 = binary_mult(a_right, b_right)
-    P3 = binary_mult(binary_add(a_left, a_right), binary_add(b_left, b_right))
+    a_l_b_l = binary_mult(a_left, b_left)
+    a_r_b_r = binary_mult(a_right, b_right)
+    c = binary_mult(binary_add(a_left, a_right), binary_add(b_left, b_right))
 
-    P6 = binary_subt(P3, binary_add(P1,  P2))
+    d = binary_subt(c, binary_add(a_l_b_l,  a_r_b_r))
 
-    P8 = P1 + [0 for i in range(0, 2*n)]
-    P9 = P6 + [0 for i in range(0, n)]
+    e = a_l_b_l + [0 for i in range(0, 2*n)]
+    f = d + [0 for i in range(0, n)]
 
-    result = binary_add(binary_add(P8,  P9), P2)
+    result = binary_add(binary_add(e,  f), a_r_b_r)
     return result
 
 #perform binary substraction
@@ -130,11 +127,7 @@ if __name__ == '__main__':
 
     #unittest.main()
     A = [0,1,1,0]
-    B = [1,0,0,0,1,0,0]
+    B = [1,0,0,0]
 
-    #print make_input_same_length(a,y)
-    #t, z = make_input_same_length(a,y)
-    #print t
-    #print z
     z = binary_mult(A,B)
     print z
