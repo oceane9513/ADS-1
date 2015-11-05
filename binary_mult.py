@@ -4,76 +4,90 @@
 Assignment 1: Binary Multiplication
 
 Team Number: 2
-Student Names: Alieu Jallow
+Student Names: Alieu Jallow, Oceane Boetsch
 '''
 import sys
 #sys.setrecursionlimit(10000)
 import unittest
 import math
-def binary_mult(A , B):
+def binary_mult(A, B):
     """
     Sig: int[0..n-1], int[0..n-1] ==> int[0..2*n-1]
-    Pre:    
+    Pre:
     Post:   
     Var:    
     Example:    binary_mult([0,1,1],[1,0,0]) = [0,0,1,1,0,0]
     """
-    #Y, X = make_input_same_length(A,B)
-    #A· B = pr · 2^n + (ps + rq)· 2^n/2 + qs
-    #assert len(A) > 0 and len(B)>0
+    A, B = make_input_same_length(A,B)
 
     maxlen = max(len(A), len(B))
+    n= maxlen / 2
+    m = (maxlen + 1) / 2
+
     if maxlen == 1:
-        return A[0] * B[0]
-        #return [result] if result < 2 else [result / 2, result % 2]
-    else:
-        n = (maxlen + 1) / 2
-        m= maxlen / 2
+        result =  A[0] * B[0]
+        return [0]+[result]
 
-        p = A[:n]
-        q = A[n:]
-        r = B[:n]
-        s = B[n:]
+    #Divide each of A and B by half and in subdigits p,q,r,s
+    a_left = A[ : m]
+    a_right = A[ m :]
+    b_left = B[ : m]
+    b_right = B[ m :]
 
-        P1 = binary_mult(p,r)
-        P2 = binary_mult(q,s)
-        P3 = binary_mult(binary_add(p, q), binary_add(r,s))
+    P1 = binary_mult(a_left, b_left)
+    P2 = binary_mult(a_right, b_right)
+    P3 = binary_mult(binary_add(a_left, a_right), binary_add(b_left, b_right))
 
-        P6 = binary_sub(P3, binary_add(P1,  P2))
+    P6 = binary_subt(P3, binary_add(P1,  P2))
 
-        P8 = P1 + [0 for i in range(0, 2 * m)]
-        P9 = P6 + [0 for i in range(0, m)]
+    P8 = P1 + [0 for i in range(0, 2*n)]
+    P9 = P6 + [0 for i in range(0, n)]
 
-        return binary_add( binary_add(P8, P9), P2)
+    result = binary_add(binary_add(P8,  P9), P2)
+    return result
 
 #perform binary substraction
-#Assumes all input is binary otherwise it returns error
-def binary_sub(x, y):
-    maxlen = max(len(x), len(y))
+def binary_subt(x, y):
     x, y = make_input_same_length(x,y)
-    result =[]
+    maxlen = max(len(x), len(y))
+    result = []
 
     for i in range(1,len(x)+1):
         diff = x[-i] - y[-i]
 
-        if diff >=0:
+        if diff >= 0:
             result.append(diff)
         else:
             k = i + 1
-            while k<= maxlen:
+            while k <= maxlen:
                 x[-k] = (x[-k] + (2 - 1)) % 2
                 if x[-k] != 2 - 1:
                     break
                 else:
                     k += 1
-            result.append(diff+2)
+            result.append(diff + 2)
     result.reverse()
     return result
 
+#Adjust the length of the inputs to same
+def make_input_same_length(x,y):
+    diff = 0
+    z = []
+    if len(x) > len(y):
+        diff = len(x) - len(y)
+        z = [0] * diff
+        y = z+y
+        return x,y
+    else:
+        diff = len(y) - len(x)
+        z = [0] * diff
+        x = z+x
+        return x, y
 #performs binary addition
 def binary_add(x,y):
-    maxlen = max(len(x), len(y))
+    #adjusts the inputs to have one length
     a, b= make_input_same_length(x,y)
+    maxlen = max(len(x), len(y))
 
     carry =0
     result=[]
@@ -89,42 +103,7 @@ def binary_add(x,y):
 
     return result
 
-def add(X,Y):
 
-        maxlen = max(len(X), len(Y))
-        X, Y = make_input_same_length(X,Y)
-
-        result = []
-        for t in range(0, maxlen+1):
-            result.append(0)
-
-        for i in range(maxlen-1, -1, -1):
-            if X[i]+Y[i]+result[i+1]==0:
-                 result[i+1]=0
-            elif X[i]+Y[i]+result[i+1]==1:
-                result[i+1]=1
-
-            elif X[i]+Y[i]+result[i+1]==2:
-                result[i+1]=0
-                result[i]=1
-            else:
-                result[i+1]=1
-                result[i]=1
-        return result
-
-def make_input_same_length(x,y):
-    diff = 0
-    z = []
-    if len(x)> len(y):
-        diff = len(x) - len(y)
-        z = [0] * diff
-        y = z+y
-        return x,y
-    else:
-        diff = len(y) - len(x)
-        z = [0] * diff
-        x = z+x
-        return x, y
 
 
 class BinaryMultTest(unittest.TestCase):
@@ -149,13 +128,13 @@ class BinaryMultTest(unittest.TestCase):
 
 if __name__ == '__main__':
 
-   # unittest.main()
-    a = [1,1,1,0,0]
-    b = [1,0,1,0,0]
+    #unittest.main()
+    A = [0,1,1,0]
+    B = [1,0,0,0,1,0,0]
 
     #print make_input_same_length(a,y)
     #t, z = make_input_same_length(a,y)
     #print t
     #print z
-    z = binary_mult(a,b)
+    z = binary_mult(A,B)
     print z
